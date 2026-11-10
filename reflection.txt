@@ -1,8 +1,8 @@
-ENG29 2121 - Computer Programming for Electrical Engineers
+﻿ENG29 2121 - Computer Programming for Electrical Engineers
 Lab 02: BJT DC Bias Web Application
 
-Reflection:
-- Implemented a 3-column responsive web application for BJT Common-Emitter Voltage-Divider Bias analysis using Python (Flask), HTML, and CSS Grid.
-- Developed dynamic overlay labeling using CSS absolute positioning to align circuit component parameters with schematic graphics.
-- Formulated exact Thevenin equivalent circuit calculations and validated all 3 BJT operating regions (Active, Cutoff, Saturation with Vce clamp).
-- Conducted automated unit testing via Python test suite to verify calculation accuracy, unit handling (kO to O, mA, �A), and input validation prior to deployment.
+สรุปผลการทดลองและสิ่งที่ได้เรียนรู้ (Reflection):
+- พัฒนาเว็บแอปพลิเคชันแบบ Responsive แบ่งเลย์เอาต์ 3 คอลัมน์ (พารามิเตอร์อินพุต, วงจรไฟฟ้า, และผลการคำนวณ) โดยใช้ Flask (Python), HTML และ CSS Grid
+- ออกแบบ Dynamic Overlay แสดงค่าพารามิเตอร์และค่าอัตราขยายกระแส (Beta) ทับบนตำแหน่งจริงของวงจรด้วย CSS Absolute Positioning ได้อย่างแม่นยำ
+- วิเคราะห์และคำนวณวงจร BJT Common-Emitter Voltage-Divider Bias ด้วยวิธีวงจรสมมูลเทเวนิน (Thevenin Equivalent) พร้อมตรวจสอบเงื่อนไขการทำงานครบทั้ง 3 โหมด (Active, Cutoff และ Saturation ที่มีการแคลมป์แรงดัน Vce = 0.2 V)
+- ตรวจสอบความถูกต้องของการคำนวณ การแปลงหน่วย (kΩ เป็น Ω, mA, μA) และ Input Validation ผ่านระบบ Python Unit Test ก่อนนำไปใช้งานจริง
