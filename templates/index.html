@@ -61,11 +61,16 @@
                 <h3>Circuit: Common-Emitter Amplifier</h3>
                 <div class="circuit-diagram-container" style="position: relative; display: inline-block;">
                     <img src="{{ url_for('static', filename='circuit.png') }}" alt="Circuit Diagram" class="circuit-svg" style="display: block; max-width: 100%;">
-                    <!-- Dynamic labels using circuit-overlay and exact position classes -->
+                    <!-- Dynamic labels mapped correctly:
+                         overlay-vcc -> Vcc
+                         overlay-rc  -> RC (top right resistor)
+                         overlay-r1  -> R1 (upper left resistor)
+                         overlay-r2  -> R2 (lower left resistor)
+                         overlay-re  -> RE (lower right resistor) -->
                     <span class="circuit-overlay overlay-vcc" id="label-vcc">VCC</span>
+                    <span class="circuit-overlay overlay-rc" id="label-rc">RC</span>
                     <span class="circuit-overlay overlay-r1" id="label-r1">R1</span>
                     <span class="circuit-overlay overlay-r2" id="label-r2">R2</span>
-                    <span class="circuit-overlay overlay-rc" id="label-rc">RC</span>
                     <span class="circuit-overlay overlay-re" id="label-re">RE</span>
                 </div>
                 <p class="circuit-caption">Standard BJT Voltage-Divider Bias Configuration</p>
