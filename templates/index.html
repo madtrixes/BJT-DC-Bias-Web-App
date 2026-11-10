@@ -8,9 +8,34 @@
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>ENG29 2121: Computer Programming for Electrical Engineers</h1>
-            <h2>BJT Common-Emitter DC Bias Analysis</h2>
+        <!-- Header Banner -->
+        <header class="app-header">
+            <div class="header-left">
+                <div class="header-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                        <rect x="9" y="9" width="6" height="6"></rect>
+                        <line x1="9" y1="1" x2="9" y2="4"></line>
+                        <line x1="15" y1="1" x2="15" y2="4"></line>
+                        <line x1="9" y1="20" x2="9" y2="23"></line>
+                        <line x1="15" y1="20" x2="15" y2="23"></line>
+                        <line x1="20" y1="9" x2="23" y2="9"></line>
+                        <line x1="20" y1="15" x2="23" y2="15"></line>
+                        <line x1="1" y1="9" x2="4" y2="9"></line>
+                        <line x1="1" y1="15" x2="4" y2="15"></line>
+                    </svg>
+                </div>
+                <div class="header-titles">
+                    <h1>Lab 02: BJT DC Bias Web App</h1>
+                    <p class="subtitle">ENG29 2121 – Common Emitter (Voltage Divider Bias)</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="dept-badge">
+                    <span class="code-icon">&lt;/&gt;</span>
+                    <span class="dept-text">Computer Programming for<br>Electrical Engineers</span>
+                </div>
+            </div>
         </header>
 
         {% if error %}
@@ -20,116 +45,187 @@
         {% endif %}
 
         <div class="grid-3col">
-            <!-- Column 1: Input Parameters -->
+            <!-- Left Column: Input Parameters -->
             <div class="card">
-                <h3>Input Parameters</h3>
+                <div class="card-header">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                    <h3>Input Parameters</h3>
+                </div>
                 <form method="POST">
-                    <div class="form-group">
-                        <label for="vcc">V<sub>CC</sub> (V):</label>
+                    <div class="input-row">
+                        <label for="vcc"><i>V</i><sub>CC</sub> <span class="label-desc">(Supply Voltage)</span></label>
                         <input type="number" step="any" id="vcc" name="vcc" value="{{ form.vcc }}" required>
+                        <select disabled><option>V</option></select>
                     </div>
-                    <div class="form-group">
-                        <label for="r1">R<sub>1</sub> (k&Omega;):</label>
+                    <div class="input-row">
+                        <label for="r1"><i>R</i><sub>1</sub> <span class="label-desc">(Upper Divider)</span></label>
                         <input type="number" step="any" id="r1" name="r1" value="{{ form.r1 }}" required>
+                        <select disabled><option>k&Omega;</option></select>
                     </div>
-                    <div class="form-group">
-                        <label for="r2">R<sub>2</sub> (k&Omega;):</label>
+                    <div class="input-row">
+                        <label for="r2"><i>R</i><sub>2</sub> <span class="label-desc">(Lower Divider)</span></label>
                         <input type="number" step="any" id="r2" name="r2" value="{{ form.r2 }}" required>
+                        <select disabled><option>k&Omega;</option></select>
                     </div>
-                    <div class="form-group">
-                        <label for="rc">R<sub>C</sub> (k&Omega;):</label>
+                    <div class="input-row">
+                        <label for="rc"><i>R</i><sub>C</sub> <span class="label-desc">(Collector Resistor)</span></label>
                         <input type="number" step="any" id="rc" name="rc" value="{{ form.rc }}" required>
+                        <select disabled><option>k&Omega;</option></select>
                     </div>
-                    <div class="form-group">
-                        <label for="re">R<sub>E</sub> (k&Omega;):</label>
+                    <div class="input-row">
+                        <label for="re"><i>R</i><sub>E</sub> <span class="label-desc">(Emitter Resistor)</span></label>
                         <input type="number" step="any" id="re" name="re" value="{{ form.re }}" required>
+                        <select disabled><option>k&Omega;</option></select>
                     </div>
-                    <div class="form-group">
-                        <label for="beta">&beta; (DC Gain):</label>
+                    <div class="input-row">
+                        <label for="beta">&beta; <span class="label-desc">(Current Gain)</span></label>
                         <input type="number" step="any" id="beta" name="beta" value="{{ form.beta }}" required>
+                        <div class="unit-box">&ndash;</div>
                     </div>
-                    <div class="form-group">
-                        <label for="vbe">V<sub>BE</sub> (V):</label>
+                    <div class="input-row">
+                        <label for="vbe"><i>V</i><sub>BE</sub> <span class="label-desc">(Base&ndash;Emitter Voltage)</span></label>
                         <input type="number" step="any" id="vbe" name="vbe" value="{{ form.vbe }}" required>
+                        <select disabled><option>V</option></select>
                     </div>
-                    <button type="submit" class="btn-calculate" onclick="updateDiagramLabels()">Calculate DC Bias</button>
+                    <button type="submit" class="btn-calculate" onclick="updateDiagramLabels()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+                            <line x1="8" y1="6" x2="16" y2="6"></line>
+                            <line x1="16" y1="14" x2="16" y2="18"></line>
+                            <path d="M16 10h.01"></path>
+                            <path d="M12 10h.01"></path>
+                            <path d="M8 10h.01"></path>
+                            <path d="M12 14h.01"></path>
+                            <path d="M8 14h.01"></path>
+                            <path d="M12 18h.01"></path>
+                            <path d="M8 18h.01"></path>
+                        </svg>
+                        Calculate DC Bias
+                    </button>
                 </form>
             </div>
 
-            <!-- Column 2: Circuit Diagram -->
+            <!-- Middle Column: Circuit Diagram -->
             <div class="card circuit-card">
-                <h3>Circuit: Common-Emitter Amplifier</h3>
-                <div class="circuit-diagram-container" style="position: relative; display: inline-block;">
-                    <img src="{{ url_for('static', filename='circuit.png') }}" alt="Circuit Diagram" class="circuit-svg" style="display: block; max-width: 100%;">
-                    <!-- Dynamic labels mapped correctly:
-                         overlay-vcc -> Vcc
-                         overlay-rc  -> RC (top right resistor)
-                         overlay-r1  -> R1 (upper left resistor)
-                         overlay-r2  -> R2 (lower left resistor)
-                         overlay-re  -> RE (lower right resistor) -->
+                <div class="card-header">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="6" cy="6" r="3"></circle>
+                        <circle cx="18" cy="18" r="3"></circle>
+                        <path d="M20 4L8.12 15.88"></path>
+                        <path d="M14.47 14.47L20 20"></path>
+                        <path d="M4 8v10h10"></path>
+                    </svg>
+                    <h3>Circuit: Common-Emitter Amplifier</h3>
+                </div>
+                <div class="circuit-diagram-container">
+                    <img src="{{ url_for('static', filename='circuit.png') }}" alt="Circuit Diagram" class="circuit-svg">
                     <span class="circuit-overlay overlay-vcc" id="label-vcc">VCC</span>
                     <span class="circuit-overlay overlay-rc" id="label-rc">RC</span>
                     <span class="circuit-overlay overlay-r1" id="label-r1">R1</span>
                     <span class="circuit-overlay overlay-r2" id="label-r2">R2</span>
                     <span class="circuit-overlay overlay-re" id="label-re">RE</span>
+                    <span class="circuit-overlay overlay-beta" id="label-beta">(&beta; = 100)</span>
                 </div>
-                <p class="circuit-caption">Standard BJT Voltage-Divider Bias Configuration</p>
+                <p class="circuit-caption">BJT Common-Emitter DC Bias (Voltage Divider)</p>
                 <script>
                     function updateDiagramLabels() {
-                        document.getElementById('label-vcc').innerText = document.getElementById('vcc').value + 'V';
-                        document.getElementById('label-r1').innerText = 'R1=' + document.getElementById('r1').value + 'kΩ';
-                        document.getElementById('label-r2').innerText = 'R2=' + document.getElementById('r2').value + 'kΩ';
-                        document.getElementById('label-rc').innerText = 'RC=' + document.getElementById('rc').value + 'kΩ';
-                        document.getElementById('label-re').innerText = 'RE=' + document.getElementById('re').value + 'kΩ';
+                        var vccVal = document.getElementById('vcc').value;
+                        var r1Val = document.getElementById('r1').value;
+                        var r2Val = document.getElementById('r2').value;
+                        var rcVal = document.getElementById('rc').value;
+                        var reVal = document.getElementById('re').value;
+                        var betaVal = document.getElementById('beta').value;
+
+                        document.getElementById('label-vcc').innerText = 'VCC = ' + vccVal + ' V';
+                        document.getElementById('label-r1').innerText = 'R1 = ' + r1Val + ' kΩ';
+                        document.getElementById('label-r2').innerText = 'R2 = ' + r2Val + ' kΩ';
+                        document.getElementById('label-rc').innerText = 'RC = ' + rcVal + ' kΩ';
+                        document.getElementById('label-re').innerText = 'RE = ' + reVal + ' kΩ';
+                        document.getElementById('label-beta').innerText = '(β = ' + betaVal + ')';
                     }
                     window.onload = updateDiagramLabels;
                 </script>
             </div>
 
-            <!-- Column 3: DC Bias Results -->
+            <!-- Right Column: DC Bias Results -->
             <div class="card">
-                <h3>DC Bias Results</h3>
+                <div class="card-header">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                        <line x1="6" y1="20" x2="6" y2="14"></line>
+                    </svg>
+                    <h3>DC Bias Results</h3>
+                </div>
                 {% if result %}
-                <div class="region-banner region-{{ result.region | lower }}">
-                    Operating Region: <strong>{{ result.region }}</strong>
-                </div>
-
-                {% if result.warnings %}
-                <div class="warnings-box">
-                    <strong>Warnings:</strong>
-                    <ul>
-                        {% for w in result.warnings %}
-                        <li>{{ w }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                {% endif %}
-
-                <table class="results-table">
-                    <tr><th>Parameter</th><th>Value</th><th>Unit</th></tr>
-                    <tr><td>V<sub>B</sub> (Base Voltage)</td><td>{{ "%.3f" | format(result.exact.V_B) }}</td><td>V</td></tr>
-                    <tr><td>V<sub>E</sub> (Emitter Voltage)</td><td>{{ "%.3f" | format(result.exact.V_E) }}</td><td>V</td></tr>
-                    <tr><td>V<sub>C</sub> (Collector Voltage)</td><td>{{ "%.3f" | format(result.exact.V_C) }}</td><td>V</td></tr>
-                    <tr><td>V<sub>CE</sub> (Collector-Emitter)</td><td>{{ "%.3f" | format(result.exact.V_CE) }}</td><td>V</td></tr>
-                    <tr><td>I<sub>B</sub> (Base Current)</td><td>{{ "%.3f" | format(result.exact.I_B_uA) }}</td><td>&mu;A</td></tr>
-                    <tr><td>I<sub>C</sub> (Collector Current)</td><td>{{ "%.3f" | format(result.exact.I_C_mA) }}</td><td>mA</td></tr>
-                    <tr><td>I<sub>E</sub> (Emitter Current)</td><td>{{ "%.3f" | format(result.exact.I_E_mA) }}</td><td>mA</td></tr>
+                <table class="results-table-styled">
+                    <tr>
+                        <td class="param-sym"><i>V</i><sub>B</sub></td>
+                        <td class="param-val"><strong>{{ "%.2f" | format(result.exact.V_B) }} V</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="param-sym"><i>V</i><sub>E</sub></td>
+                        <td class="param-val"><strong>{{ "%.2f" | format(result.exact.V_E) }} V</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="param-sym"><i>V</i><sub>C</sub></td>
+                        <td class="param-val"><strong>{{ "%.2f" | format(result.exact.V_C) }} V</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="param-sym"><i>V</i><sub>CE</sub></td>
+                        <td class="param-val"><strong>{{ "%.2f" | format(result.exact.V_CE) }} V</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="param-sym"><i>I</i><sub>B</sub></td>
+                        <td class="param-val"><strong>{{ "%.1f" | format(result.exact.I_B_uA) }} &mu;A</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="param-sym"><i>I</i><sub>C</sub></td>
+                        <td class="param-val"><strong>{{ "%.2f" | format(result.exact.I_C_mA) }} mA</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="param-sym"><i>I</i><sub>E</sub></td>
+                        <td class="param-val"><strong>{{ "%.2f" | format(result.exact.I_E_mA) }} mA</strong></td>
+                    </tr>
                 </table>
 
-                {% if result.region == 'Active' and result.approx_valid %}
-                <div class="badge-success-container">
-                    <span class="badge-active-ok">&#10003; Active region approximation OK</span>
+                {% if result.region == 'Active' %}
+                <div class="status-card status-active">
+                    <div class="status-title">
+                        <svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="#16a34a">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                        <strong>Active region approximation OK</strong>
+                    </div>
+                    <div class="status-subtext">
+                        <i>V</i><sub>CE</sub> = {{ "%.2f" | format(result.exact.V_CE) }} V &gt; 0.2 V (transistor in active region)
+                    </div>
                 </div>
-                {% endif %}
-
-                <h4 style="margin-top: 15px; font-size: 0.95rem;">Approximate Comparison</h4>
-                <table class="results-table" style="font-size: 0.85rem;">
-                    <tr><th>Parameter</th><th>Approx</th><th>Diff</th></tr>
-                    <tr><td>I<sub>C</sub></td><td>{{ "%.3f" | format(result.approx.I_C_mA) }} mA</td><td>{{ "%.1f" | format(result.approx.diff_ic_pct) }}%</td></tr>
-                    <tr><td>V<sub>CE</sub></td><td>{{ "%.3f" | format(result.approx.V_CE) }} V</td><td>{{ "%.1f" | format(result.approx.diff_vce_pct) }}%</td></tr>
-                </table>
+                {% elif result.region == 'Cutoff' %}
+                <div class="status-card status-cutoff">
+                    <div class="status-title">
+                        <strong>Transistor in CUTOFF region</strong>
+                    </div>
+                    <div class="status-subtext">
+                        <i>V</i><sub>TH</sub> &le; <i>V</i><sub>BE</sub>. Base current is zero.
+                    </div>
+                </div>
                 {% else %}
-                <p class="placeholder-text">Enter parameters and click "Calculate DC Bias" to view Q-point results.</p>
+                <div class="status-card status-saturation">
+                    <div class="status-title">
+                        <strong>Transistor in SATURATION region</strong>
+                    </div>
+                    <div class="status-subtext">
+                        <i>V</i><sub>CE</sub> clamped to 0.2 V.
+                    </div>
+                </div>
+                {% endif %}
+
+                {% else %}
+                <p class="placeholder-text">Enter parameters and click "Calculate DC Bias" to view results.</p>
                 {% endif %}
             </div>
         </div>
