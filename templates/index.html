@@ -20,7 +20,7 @@
         {% endif %}
 
         <div class="grid-3col">
-            <!-- Left Column: Input Parameters -->
+            <!-- Column 1: Input Parameters -->
             <div class="card">
                 <h3>Input Parameters</h3>
                 <form method="POST">
@@ -52,40 +52,36 @@
                         <label for="vbe">V<sub>BE</sub> (V):</label>
                         <input type="number" step="any" id="vbe" name="vbe" value="{{ form.vbe }}" required>
                     </div>
-                    <button type="submit" class="btn-calculate">Calculate DC Bias</button>
+                    <button type="submit" class="btn-calculate" onclick="updateDiagramLabels()">Calculate DC Bias</button>
                 </form>
             </div>
 
-            <!-- Middle Column: Circuit Diagram Placeholder -->
+            <!-- Column 2: Circuit Diagram -->
             <div class="card circuit-card">
                 <h3>Circuit: Common-Emitter Amplifier</h3>
-<div class="circuit-diagram-container" style="position: relative;">
-    <img src="{{ url_for('static', filename='circuit.png') }}" alt="Circuit Diagram" class="circuit-svg" style="display: block;">
-    <div class="circuit-diagram-container" style="position: relative; display: inline-block;">
-        <img src="{{ url_for('static', filename='circuit.png') }}" alt="Circuit Diagram" class="circuit-svg" style="display: block; max-width: 100%;">
-        <!-- Dynamic labels with refined absolute positioning -->
-        <span class="dyn-val" id="label-vcc" style="position: absolute; top: 10%; left: 45%; background-color: white; padding: 2px 4px; border: 1px solid #ccc; font-size: 0.85rem;">VCC</span>
-        <span class="dyn-val" id="label-r1" style="position: absolute; top: 30%; left: 55%; background-color: white; padding: 2px 4px; border: 1px solid #ccc; font-size: 0.85rem;">R1</span>
-        <span class="dyn-val" id="label-r2" style="position: absolute; top: 55%; left: 65%; background-color: white; padding: 2px 4px; border: 1px solid #ccc; font-size: 0.85rem;">R2</span>
-        <span class="dyn-val" id="label-rc" style="position: absolute; top: 20%; left: 20%; background-color: white; padding: 2px 4px; border: 1px solid #ccc; font-size: 0.85rem;">RC</span>
-        <span class="dyn-val" id="label-re" style="position: absolute; top: 75%; left: 55%; background-color: white; padding: 2px 4px; border: 1px solid #ccc; font-size: 0.85rem;">RE</span>
-    </div>
-<script>
-    function updateDiagramLabels() {
-        document.getElementById('label-vcc').innerText = document.getElementById('vcc').value + 'V';
-        document.getElementById('label-r1').innerText = 'R1=' + document.getElementById('r1').value + 'kΩ';
-        document.getElementById('label-r2').innerText = 'R2=' + document.getElementById('r2').value + 'kΩ';
-        document.getElementById('label-rc').innerText = 'RC=' + document.getElementById('rc').value + 'kΩ';
-        document.getElementById('label-re').innerText = 'RE=' + document.getElementById('re').value + 'kΩ';
-    }
-    // Update on load and form submit
-    window.onload = updateDiagramLabels;
-</script>
-
+                <div class="circuit-diagram-container" style="position: relative; display: inline-block;">
+                    <img src="{{ url_for('static', filename='circuit.png') }}" alt="Circuit Diagram" class="circuit-svg" style="display: block; max-width: 100%;">
+                    <!-- Dynamic labels -->
+                    <span class="dyn-val" id="label-vcc" style="position: absolute; top: 10%; left: 45%; background-color: white; padding: 2px 4px; border: 1px solid #ccc; font-size: 0.85rem;">VCC</span>
+                    <span class="dyn-val" id="label-r1" style="position: absolute; top: 30%; left: 55%; background-color: white; padding: 2px 4px; border: 1px solid #ccc; font-size: 0.85rem;">R1</span>
+                    <span class="dyn-val" id="label-r2" style="position: absolute; top: 55%; left: 65%; background-color: white; padding: 2px 4px; border: 1px solid #ccc; font-size: 0.85rem;">R2</span>
+                    <span class="dyn-val" id="label-rc" style="position: absolute; top: 20%; left: 20%; background-color: white; padding: 2px 4px; border: 1px solid #ccc; font-size: 0.85rem;">RC</span>
+                    <span class="dyn-val" id="label-re" style="position: absolute; top: 75%; left: 55%; background-color: white; padding: 2px 4px; border: 1px solid #ccc; font-size: 0.85rem;">RE</span>
+                </div>
                 <p class="circuit-caption">Standard BJT Voltage-Divider Bias Configuration</p>
+                <script>
+                    function updateDiagramLabels() {
+                        document.getElementById('label-vcc').innerText = document.getElementById('vcc').value + 'V';
+                        document.getElementById('label-r1').innerText = 'R1=' + document.getElementById('r1').value + 'kΩ';
+                        document.getElementById('label-r2').innerText = 'R2=' + document.getElementById('r2').value + 'kΩ';
+                        document.getElementById('label-rc').innerText = 'RC=' + document.getElementById('rc').value + 'kΩ';
+                        document.getElementById('label-re').innerText = 'RE=' + document.getElementById('re').value + 'kΩ';
+                    }
+                    window.onload = updateDiagramLabels;
+                </script>
             </div>
 
-            <!-- Right Column: DC Bias Results -->
+            <!-- Column 3: DC Bias Results -->
             <div class="card">
                 <h3>DC Bias Results</h3>
                 {% if result %}
