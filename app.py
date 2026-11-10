@@ -7,13 +7,13 @@ app = Flask(__name__)
 def index():
     result = None
     error = None
-    # Default form values
+    # Default form values in kOhm
     form_data = {
         "vcc": "12.0",
-        "r1": "33000",
-        "r2": "10000",
-        "rc": "2200",
-        "re": "1000",
+        "r1": "33.0",
+        "r2": "10.0",
+        "rc": "2.2",
+        "re": "1.0",
         "beta": "100",
         "vbe": "0.7"
     }
@@ -21,18 +21,19 @@ def index():
     if request.method == "POST":
         try:
             form_data["vcc"] = request.form.get("vcc", "12.0")
-            form_data["r1"] = request.form.get("r1", "33000")
-            form_data["r2"] = request.form.get("r2", "10000")
-            form_data["rc"] = request.form.get("rc", "2200")
-            form_data["re"] = request.form.get("re", "1000")
+            form_data["r1"] = request.form.get("r1", "33.0")
+            form_data["r2"] = request.form.get("r2", "10.0")
+            form_data["rc"] = request.form.get("rc", "2.2")
+            form_data["re"] = request.form.get("re", "1.0")
             form_data["beta"] = request.form.get("beta", "100")
             form_data["vbe"] = request.form.get("vbe", "0.7")
 
             vcc = float(form_data["vcc"])
-            r1 = float(form_data["r1"])
-            r2 = float(form_data["r2"])
-            rc = float(form_data["rc"])
-            re = float(form_data["re"])
+            # Multiply kilo-ohm inputs by 1000 to convert to ohms
+            r1 = float(form_data["r1"]) * 1000.0
+            r2 = float(form_data["r2"]) * 1000.0
+            rc = float(form_data["rc"]) * 1000.0
+            re = float(form_data["re"]) * 1000.0
             beta = float(form_data["beta"])
             vbe = float(form_data["vbe"])
 
