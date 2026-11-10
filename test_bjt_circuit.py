@@ -47,7 +47,7 @@ def test_flask_post_valid_calculation():
     response = client.post("/", data=data)
     assert response.status_code == 200
     assert b"Active" in response.data
-    assert b"DC Operating Point" in response.data
+    assert b"DC Bias Results" in response.data
 
 def test_flask_post_invalid_input_handles_gracefully():
     client = app.test_client()
