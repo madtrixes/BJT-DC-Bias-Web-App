@@ -59,62 +59,27 @@
             <!-- Middle Column: Circuit Diagram Placeholder -->
             <div class="card circuit-card">
                 <h3>Circuit: Common-Emitter Amplifier</h3>
-                <div class="circuit-diagram-container">
-                    <!-- SVG Schematic Representation of Voltage-Divider Bias BJT -->
-                    <svg viewBox="0 0 300 350" class="circuit-svg">
-                        <!-- Vcc rail -->
-                        <line x1="150" y1="20" x2="150" y2="50" stroke="#333" stroke-width="2"/>
-                        <text x="155" y="35" font-size="14" font-weight="bold" fill="#333">VCC</text>
-                        
-                        <!-- R1 -->
-                        <line x1="150" y1="50" x2="150" y2="90" stroke="#333" stroke-width="2"/>
-                        <path d="M 140 90 L 160 100 L 140 110 L 160 120 L 140 130 L 150 140" fill="none" stroke="#333" stroke-width="2"/>
-                        <text x="165" y="115" font-size="12" fill="#333">R1</text>
-                        <line x1="150" y1="140" x2="150" y2="160" stroke="#333" stroke-width="2"/>
+<div class="circuit-diagram-container" style="position: relative;">
+    <img src="{{ url_for('static', filename='circuit.png') }}" alt="Circuit Diagram" class="circuit-svg" style="display: block;">
+    <!-- Dynamic labels -->
+    <span class="dyn-val" id="label-vcc" style="position: absolute; top: 10px; left: 160px; font-size: 14px; font-weight: bold;">VCC</span>
+    <span class="dyn-val" id="label-r1" style="position: absolute; top: 110px; left: 170px; font-size: 12px;">R1</span>
+    <span class="dyn-val" id="label-r2" style="position: absolute; top: 185px; left: 220px; font-size: 12px;">R2</span>
+    <span class="dyn-val" id="label-rc" style="position: absolute; top: 65px; left: 60px; font-size: 12px;">RC</span>
+    <span class="dyn-val" id="label-re" style="position: absolute; top: 265px; left: 175px; font-size: 12px;">RE</span>
+</div>
+<script>
+    function updateDiagramLabels() {
+        document.getElementById('label-vcc').innerText = document.getElementById('vcc').value + 'V';
+        document.getElementById('label-r1').innerText = 'R1=' + document.getElementById('r1').value + 'kΩ';
+        document.getElementById('label-r2').innerText = 'R2=' + document.getElementById('r2').value + 'kΩ';
+        document.getElementById('label-rc').innerText = 'RC=' + document.getElementById('rc').value + 'kΩ';
+        document.getElementById('label-re').innerText = 'RE=' + document.getElementById('re').value + 'kΩ';
+    }
+    // Update on load and form submit
+    window.onload = updateDiagramLabels;
+</script>
 
-                        <!-- Node to Base & R2 -->
-                        <circle cx="150" cy="160" r="3" fill="#333"/>
-                        <line x1="150" y1="160" x2="200" y2="160" stroke="#333" stroke-width="2"/>
-                        
-                        <!-- R2 -->
-                        <path d="M 200 160 L 210 170 L 190 180 L 210 190 L 190 200 L 200 210" fill="none" stroke="#333" stroke-width="2"/>
-                        <text x="215" y="190" font-size="12" fill="#333">R2</text>
-                        <line x1="200" y1="210" x2="200" y2="250" stroke="#333" stroke-width="2"/>
-                        <!-- Ground -->
-                        <line x1="185" y1="250" x2="215" y2="250" stroke="#333" stroke-width="2"/>
-                        <line x1="190" y1="255" x2="210" y2="255" stroke="#333" stroke-width="1.5"/>
-                        <line x1="195" y1="260" x2="205" y2="260" stroke="#333" stroke-width="1"/>
-
-                        <!-- Transistor NPN -->
-                        <!-- Base lead -->
-                        <line x1="150" y1="160" x2="110" y2="190" stroke="#333" stroke-width="2"/>
-                        <!-- Transistor body circle / lines -->
-                        <polygon points="105,175 105,205 130,190" fill="none" stroke="#333" stroke-width="2"/>
-                        <line x1="105" y1="170" x2="105" y2="210" stroke="#333" stroke-width="4"/>
-                        <!-- Collector -->
-                        <line x1="120" y1="181" x2="120" y2="120" stroke="#333" stroke-width="2"/>
-                        <!-- Emitter with arrow -->
-                        <line x1="120" y1="199" x2="140" y2="215" stroke="#333" stroke-width="2"/>
-                        <!-- Arrow pointing out for NPN -->
-                        <polygon points="130,206 140,215 133,213" fill="#333"/>
-
-                        <!-- Collector RC resistor -->
-                        <line x1="120" y1="120" x2="120" y2="90" stroke="#333" stroke-width="2"/>
-                        <path d="M 110 90 L 130 80 L 110 70 L 130 60 L 110 50 L 120 40" fill="none" stroke="#333" stroke-width="2"/>
-                        <text x="80" y="70" font-size="12" fill="#333">RC</text>
-                        <line x1="120" y1="40" x2="150" y2="40" stroke="#333" stroke-width="2"/>
-
-                        <!-- Emitter RE resistor -->
-                        <line x1="140" y1="215" x2="140" y2="240" stroke="#333" stroke-width="2"/>
-                        <path d="M 130 240 L 150 250 L 130 260 L 150 270 L 130 280 L 140 290" fill="none" stroke="#333" stroke-width="2"/>
-                        <text x="155" y="270" font-size="12" fill="#333">RE</text>
-                        <line x1="140" y1="290" x2="140" y2="310" stroke="#333" stroke-width="2"/>
-                        <!-- Ground -->
-                        <line x1="125" y1="310" x2="155" y2="310" stroke="#333" stroke-width="2"/>
-                        <line x1="130" y1="315" x2="150" y2="315" stroke="#333" stroke-width="1.5"/>
-                        <line x1="135" y1="320" x2="145" y2="320" stroke="#333" stroke-width="1"/>
-                    </svg>
-                </div>
                 <p class="circuit-caption">Standard BJT Voltage-Divider Bias Configuration</p>
             </div>
 
