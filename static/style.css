@@ -119,6 +119,7 @@ header h2 {
     justify-content: center;
     align-items: center;
     padding: 10px;
+    position: relative;
 }
 
 .circuit-svg {
@@ -131,6 +132,42 @@ header h2 {
     color: #666;
     margin-top: 10px;
     font-style: italic;
+}
+
+.circuit-overlay {
+    position: absolute;
+    background-color: white;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: bold;
+    transform: translate(-50%, -50%);
+    border: 1px solid #ccc;
+}
+
+.overlay-vcc {
+    top: 15%;
+    left: 50%;
+}
+
+.overlay-rc {
+    top: 25%;
+    left: 30%;
+}
+
+.overlay-r1 {
+    top: 35%;
+    left: 65%;
+}
+
+.overlay-r2 {
+    top: 65%;
+    left: 65%;
+}
+
+.overlay-re {
+    top: 85%;
+    left: 60%;
 }
 
 .alert-error {
