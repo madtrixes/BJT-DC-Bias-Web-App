@@ -61,13 +61,15 @@
                 <h3>Circuit: Common-Emitter Amplifier</h3>
 <div class="circuit-diagram-container" style="position: relative;">
     <img src="{{ url_for('static', filename='circuit.png') }}" alt="Circuit Diagram" class="circuit-svg" style="display: block;">
-    <!-- Dynamic labels -->
-    <span class="dyn-val" id="label-vcc" style="position: absolute; top: 10px; left: 160px; font-size: 14px; font-weight: bold;">VCC</span>
-    <span class="dyn-val" id="label-r1" style="position: absolute; top: 110px; left: 170px; font-size: 12px;">R1</span>
-    <span class="dyn-val" id="label-r2" style="position: absolute; top: 185px; left: 220px; font-size: 12px;">R2</span>
-    <span class="dyn-val" id="label-rc" style="position: absolute; top: 65px; left: 60px; font-size: 12px;">RC</span>
-    <span class="dyn-val" id="label-re" style="position: absolute; top: 265px; left: 175px; font-size: 12px;">RE</span>
-</div>
+    <div class="circuit-diagram-container" style="position: relative; display: inline-block;">
+        <img src="{{ url_for('static', filename='circuit.png') }}" alt="Circuit Diagram" class="circuit-svg" style="display: block; max-width: 100%;">
+        <!-- Dynamic labels with refined absolute positioning -->
+        <span class="dyn-val" id="label-vcc" style="position: absolute; top: 10%; left: 45%; background-color: white; padding: 2px 4px; border: 1px solid #ccc; font-size: 0.85rem;">VCC</span>
+        <span class="dyn-val" id="label-r1" style="position: absolute; top: 30%; left: 55%; background-color: white; padding: 2px 4px; border: 1px solid #ccc; font-size: 0.85rem;">R1</span>
+        <span class="dyn-val" id="label-r2" style="position: absolute; top: 55%; left: 65%; background-color: white; padding: 2px 4px; border: 1px solid #ccc; font-size: 0.85rem;">R2</span>
+        <span class="dyn-val" id="label-rc" style="position: absolute; top: 20%; left: 20%; background-color: white; padding: 2px 4px; border: 1px solid #ccc; font-size: 0.85rem;">RC</span>
+        <span class="dyn-val" id="label-re" style="position: absolute; top: 75%; left: 55%; background-color: white; padding: 2px 4px; border: 1px solid #ccc; font-size: 0.85rem;">RE</span>
+    </div>
 <script>
     function updateDiagramLabels() {
         document.getElementById('label-vcc').innerText = document.getElementById('vcc').value + 'V';
