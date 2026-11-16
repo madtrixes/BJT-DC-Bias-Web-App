@@ -127,7 +127,7 @@
                     <span class="circuit-overlay overlay-r1" id="label-r1">R1</span>
                     <span class="circuit-overlay overlay-r2" id="label-r2">R2</span>
                     <span class="circuit-overlay overlay-re" id="label-re">RE</span>
-                    <span class="circuit-overlay overlay-beta" id="label-beta">(&beta; = 100)</span>
+                    <span class="circuit-overlay overlay-beta" id="label-beta">&beta;</span>
                 </div>
                 <p class="circuit-caption">BJT Common-Emitter DC Bias (Voltage Divider)</p>
                 <script>
@@ -144,7 +144,7 @@
                         document.getElementById('label-r2').innerText = 'R2 = ' + r2Val + ' kΩ';
                         document.getElementById('label-rc').innerText = 'RC = ' + rcVal + ' kΩ';
                         document.getElementById('label-re').innerText = 'RE = ' + reVal + ' kΩ';
-                        document.getElementById('label-beta').innerText = '(β = ' + betaVal + ')';
+                        document.getElementById('label-beta').innerText = 'β = ' + betaVal;
                     }
                     window.onload = updateDiagramLabels;
                 </script>
