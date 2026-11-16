@@ -56,17 +56,25 @@
                 </div>
                 <form method="POST">
                     <div class="input-row">
+                        <label for="bias_mode">Bias Configuration</label>
+                        <select id="bias_mode" name="bias_mode" onchange="onBiasModeChange()" style="width: 100%; padding: 6px; background: #ffffff; appearance: auto;">
+                            <option value="divider" {% if form.bias_mode == 'divider' %}selected{% endif %}>Voltage Divider Bias</option>
+                            <option value="fixed" {% if form.bias_mode == 'fixed' %}selected{% endif %}>Fixed Bias</option>
+                            <option value="emitter" {% if form.bias_mode == 'emitter' %}selected{% endif %}>Emitter Bias</option>
+                        </select>
+                    </div>
+                    <div class="input-row">
                         <label for="vcc"><i>V</i><sub>CC</sub> <span class="label-desc">(Supply Voltage)</span></label>
                         <input type="number" step="any" id="vcc" name="vcc" value="{{ form.vcc }}" required>
                         <select disabled><option>V</option></select>
                     </div>
-                    <div class="input-row">
-                        <label for="r1"><i>R</i><sub>1</sub> <span class="label-desc">(Upper Divider)</span></label>
+                    <div class="input-row" id="row-r1">
+                        <label for="r1" id="label-r1-text"><i>R</i><sub>1</sub> <span class="label-desc">(Upper Divider)</span></label>
                         <input type="number" step="any" id="r1" name="r1" value="{{ form.r1 }}" required>
                         <select disabled><option>k&Omega;</option></select>
                     </div>
-                    <div class="input-row">
-                        <label for="r2"><i>R</i><sub>2</sub> <span class="label-desc">(Lower Divider)</span></label>
+                    <div class="input-row" id="row-r2">
+                        <label for="r2" id="label-r2-text"><i>R</i><sub>2</sub> <span class="label-desc">(Lower Divider)</span></label>
                         <input type="number" step="any" id="r2" name="r2" value="{{ form.r2 }}" required>
                         <select disabled><option>k&Omega;</option></select>
                     </div>
@@ -75,8 +83,8 @@
                         <input type="number" step="any" id="rc" name="rc" value="{{ form.rc }}" required>
                         <select disabled><option>k&Omega;</option></select>
                     </div>
-                    <div class="input-row">
-                        <label for="re"><i>R</i><sub>E</sub> <span class="label-desc">(Emitter Resistor)</span></label>
+                    <div class="input-row" id="row-re">
+                        <label for="re" id="label-re-text"><i>R</i><sub>E</sub> <span class="label-desc">(Emitter Resistor)</span></label>
                         <input type="number" step="any" id="re" name="re" value="{{ form.re }}" required>
                         <select disabled><option>k&Omega;</option></select>
                     </div>
@@ -131,7 +139,46 @@
                 </div>
                 <p class="circuit-caption">BJT Common-Emitter DC Bias (Voltage Divider)</p>
                 <script>
+                    function onBiasModeChange() {
+                        var mode = document.getElementById('bias_mode').value;
+                        var rowR2 = document.getElementById('row-r2');
+                        var rowRe = document.getElementById('row-re');
+                        var labelR1Text = document.getElementById('label-r1-text');
+                        var labelR1 = document.getElementById('label-r1');
+                        var labelR2 = document.getElementById('label-r2');
+                        var labelRe = document.getElementById('label-re');
+                        var caption = document.querySelector('.circuit-caption');
+
+                        if (mode === 'fixed') {
+                            rowR2.style.display = 'none';
+                            rowRe.style.display = 'none';
+                            labelR1Text.innerHTML = '<i>R</i><sub>B</sub> <span class="label-desc">(Base Resistor)</span>';
+                            if(labelR1) labelR1.style.display = 'block';
+                            if(labelR2) labelR2.style.display = 'none';
+                            if(labelRe) labelRe.style.display = 'none';
+                            if(caption) caption.innerText = 'BJT Fixed Bias DC Operating Point';
+                        } else if (mode === 'emitter') {
+                            rowR2.style.display = 'none';
+                            rowRe.style.display = 'flex';
+                            labelR1Text.innerHTML = '<i>R</i><sub>B</sub> <span class="label-desc">(Base Resistor)</span>';
+                            if(labelR1) labelR1.style.display = 'block';
+                            if(labelR2) labelR2.style.display = 'none';
+                            if(labelRe) labelRe.style.display = 'block';
+                            if(caption) caption.innerText = 'BJT Emitter Bias DC Operating Point';
+                        } else {
+                            rowR2.style.display = 'flex';
+                            rowRe.style.display = 'flex';
+                            labelR1Text.innerHTML = '<i>R</i><sub>1</sub> <span class="label-desc">(Upper Divider)</span>';
+                            if(labelR1) labelR1.style.display = 'block';
+                            if(labelR2) labelR2.style.display = 'block';
+                            if(labelRe) labelRe.style.display = 'block';
+                            if(caption) caption.innerText = 'BJT Common-Emitter DC Bias (Voltage Divider)';
+                        }
+                        updateDiagramLabels();
+                    }
+
                     function updateDiagramLabels() {
+                        var mode = document.getElementById('bias_mode').value;
                         var vccVal = document.getElementById('vcc').value;
                         var r1Val = document.getElementById('r1').value;
                         var r2Val = document.getElementById('r2').value;
@@ -140,13 +187,24 @@
                         var betaVal = document.getElementById('beta').value;
 
                         document.getElementById('label-vcc').innerText = 'VCC = ' + vccVal + ' V';
-                        document.getElementById('label-r1').innerText = 'R1 = ' + r1Val + ' kΩ';
-                        document.getElementById('label-r2').innerText = 'R2 = ' + r2Val + ' kΩ';
                         document.getElementById('label-rc').innerText = 'RC = ' + rcVal + ' kΩ';
-                        document.getElementById('label-re').innerText = 'RE = ' + reVal + ' kΩ';
+                        
+                        if (mode === 'fixed') {
+                            document.getElementById('label-r1').innerText = 'RB = ' + r1Val + ' kΩ';
+                        } else if (mode === 'emitter') {
+                            document.getElementById('label-r1').innerText = 'RB = ' + r1Val + ' kΩ';
+                            document.getElementById('label-re').innerText = 'RE = ' + reVal + ' kΩ';
+                        } else {
+                            document.getElementById('label-r1').innerText = 'R1 = ' + r1Val + ' kΩ';
+                            document.getElementById('label-r2').innerText = 'R2 = ' + r2Val + ' kΩ';
+                            document.getElementById('label-re').innerText = 'RE = ' + reVal + ' kΩ';
+                        }
                         document.getElementById('label-beta').innerText = 'β = ' + betaVal;
                     }
-                    window.onload = updateDiagramLabels;
+
+                    window.onload = function() {
+                        onBiasModeChange();
+                    };
                 </script>
             </div>
 

@@ -80,7 +80,6 @@ def calculate_dc_bias(vcc, r1, r2, rc, re, beta, vbe=0.7):
         warnings.append("Transistor is in SATURATION region (V_CE <= 0.2V). Collector-emitter voltage clamped to 0.2V.")
 
     # Approximate Engineering Method Comparison
-    # Rule of thumb: beta * Re >= 10 * R2
     approx_valid = (beta * re >= 10 * r2)
     v_b_approx = v_th
     v_e_approx = v_b_approx - vbe
@@ -91,7 +90,6 @@ def calculate_dc_bias(vcc, r1, r2, rc, re, beta, vbe=0.7):
     if not approx_valid:
         warnings.append("Rule of thumb (beta*Re >= 10*R2) not met. Approximate method comparison may have larger error.")
 
-    # Percentage differences
     i_c_exact_mA = i_c * 1000
     i_c_approx_mA = i_c_approx * 1000
     diff_ic = abs(i_c_exact_mA - i_c_approx_mA) / ((i_c_exact_mA + i_c_approx_mA) / 2) * 100 if (i_c_exact_mA + i_c_approx_mA) > 0 else 0.0
@@ -124,4 +122,106 @@ def calculate_dc_bias(vcc, r1, r2, rc, re, beta, vbe=0.7):
         "approx": approx,
         "approx_valid": approx_valid,
         "warnings": warnings
+    }
+
+
+def calculate_fixed_bias(vcc, rb, rc, beta, vbe=0.7):
+    """
+    Calculates BJT Fixed Bias DC Operating Point in Forward Active Region.
+    Returns dictionary with keys: vb_v, ve_v, vc_v, vce_v, ib_ua, ic_ma, ie_ma.
+    """
+    if vcc <= 0:
+        raise ValueError("Vcc must be positive")
+    if rb <= 0 or rc < 0:
+        raise ValueError("Resistances must be positive (Rb > 0, Rc >= 0)")
+    if beta <= 0:
+        raise ValueError("Beta must be positive")
+    if not (0 < vbe < vcc):
+        raise ValueError("Vbe must be between 0 and Vcc")
+
+    i_b = (vcc - vbe) / rb
+    if i_b <= 0:
+        raise ValueError("Calculated base current (I_B) is <= 0. Forward Active model invalid.")
+
+    i_c = beta * i_b
+    i_e = (beta + 1) * i_b
+    v_e = 0.0
+    v_b = vbe
+    v_c = vcc - i_c * rc
+    v_ce = v_c - v_e
+
+    if v_ce <= 0.2:
+        raise ValueError("Calculated V_CE <= 0.2V. Transistor is in Saturation; Forward Active model invalid.")
+
+    return {
+        "vb_v": v_b,
+        "ve_v": v_e,
+        "vc_v": v_c,
+        "vce_v": v_ce,
+        "ib_ua": i_b * 1e6,
+        "ic_ma": i_c * 1000,
+        "ie_ma": i_e * 1000
+    }
+
+
+def calculate_emitter_bias(vcc, rb, rc, re, beta, vbe=0.7):
+    """
+    Calculates BJT Emitter Bias (single supply) DC Operating Point in Forward Active Region.
+    Returns dictionary with keys: vb_v, ve_v, vc_v, vce_v, ib_ua, ic_ma, ie_ma.
+    """
+    if vcc <= 0:
+        raise ValueError("Vcc must be positive")
+    if rb <= 0 or rc < 0 or re < 0:
+        raise ValueError("Resistances must be positive (Rb > 0, Rc >= 0, Re >= 0)")
+    if beta <= 0:
+        raise ValueError("Beta must be positive")
+    if not (0 < vbe < vcc):
+        raise ValueError("Vbe must be between 0 and Vcc")
+
+    i_b = (vcc - vbe) / (rb + (beta + 1) * re)
+    if i_b <= 0:
+        raise ValueError("Calculated base current (I_B) is <= 0. Forward Active model invalid.")
+
+    i_c = beta * i_b
+    i_e = (beta + 1) * i_b
+    v_e = i_e * re
+    v_b = v_e + vbe
+    v_c = vcc - i_c * rc
+    v_ce = v_c - v_e
+
+    if v_ce <= 0.2:
+        raise ValueError("Calculated V_CE <= 0.2V. Transistor is in Saturation; Forward Active model invalid.")
+
+    return {
+        "vb_v": v_b,
+        "ve_v": v_e,
+        "vc_v": v_c,
+        "vce_v": v_ce,
+        "ib_ua": i_b * 1e6,
+        "ic_ma": i_c * 1000,
+        "ie_ma": i_e * 1000
+    }
+
+
+def calculate_divider_bias_dict(vcc, r1, r2, rc, re, beta, vbe=0.7):
+    """
+    Wrapper for Voltage Divider Bias returning standardized dictionary keys
+    (vb_v, ve_v, vc_v, vce_v, ib_ua, ic_ma, ie_ma).
+    """
+    res = calculate_dc_bias(vcc, r1, r2, rc, re, beta, vbe)
+    exact = res["exact"]
+    v_ce = exact["V_CE"]
+    if v_ce <= 0.2 and res["region"] == "Saturation":
+        raise ValueError("Calculated V_CE <= 0.2V. Transistor is in Saturation; Forward Active model invalid.")
+    if res["region"] == "Cutoff":
+        raise ValueError("Transistor is in Cutoff region (V_TH <= V_BE). Forward Active model invalid.")
+    
+    return {
+        "vb_v": exact["V_B"],
+        "ve_v": exact["V_E"],
+        "vc_v": exact["V_C"],
+        "vce_v": v_ce,
+        "ib_ua": exact["I_B_uA"],
+        "ic_ma": exact["I_C_mA"],
+        "ie_ma": exact["I_E_mA"]
     }
