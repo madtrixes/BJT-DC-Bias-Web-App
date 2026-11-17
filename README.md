@@ -1,12 +1,12 @@
-# ENG29 2121 - BJT Common-Emitter DC Bias Web Application
+﻿# ENG29 2121 - BJT Common-Emitter DC Bias Web Application
 A minimal, modular, and fully tested Flask web application for ENG29 2121 (Computer Programming for Electrical Engineers) that computes the DC Operating Point (Q-Point) of a BJT Common-Emitter circuit supporting 3 bias configurations (Voltage Divider, Fixed Bias, Emitter Bias).
 
-## 🚀 Repository & Submission Info
+## ðŸš€ Repository & Submission Info
 - **GitHub Repository URL**: [https://github.com/madtrixes/BJT-DC-Bias-Web-App](https://github.com/madtrixes/BJT-DC-Bias-Web-App)
-- **Commit SHA**: `70973294643f410dc2c2535b45ddfe43827370a6`
+- **Commit SHA**: `83853fb60eed512579956eeb0ef80f7ad89625f5`
 - **Student ID**: B6428884 (Akkarawit Jaroenphan)
 
-## 🛠️ Lab Requirements Met
+## ðŸ› ï¸ Lab Requirements Met
 - **Separate Modules**:
   - `bjt_circuit.py`: Core engineering calculations, 3 bias modes (Divider, Fixed, Emitter), region detection, input validation ($R_B > 0$), and approximate checks.
   - `app.py`: Flask web application routes handling multi-mode inputs and JSON/dict outputs.
@@ -18,7 +18,7 @@ A minimal, modular, and fully tested Flask web application for ENG29 2121 (Compu
 
 ---
 
-## 💻 Quickstart & Localhost Demonstration
+## ðŸ’» Quickstart & Localhost Demonstration
 
 1. **Install Dependencies**:
    ```bash
@@ -36,5 +36,5 @@ A minimal, modular, and fully tested Flask web application for ENG29 2121 (Compu
    ```
    Open your browser and navigate to `http://127.0.0.1:5000/`.
 
-## 🤖 AI Assistance Disclosure
+## ðŸ¤– AI Assistance Disclosure
 - AI Tools Used: Assisted in structuring modular Python functions, drafting Pytest cases, configuring Playwright MCP automated browser acceptance testing (opencode.json), and refining documentation formatting. All calculation logic and validation criteria were verified independently against electrical engineering theory.
