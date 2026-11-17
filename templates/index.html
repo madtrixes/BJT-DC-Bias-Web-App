@@ -129,56 +129,185 @@
                     <h3>Circuit: Common-Emitter Amplifier</h3>
                 </div>
                 <div class="circuit-diagram-container">
-                    <img src="{{ url_for('static', filename='circuit.png') }}" alt="Circuit Diagram" class="circuit-svg">
-                    <span class="circuit-overlay overlay-vcc" id="label-vcc">VCC</span>
-                    <span class="circuit-overlay overlay-rc" id="label-rc">RC</span>
-                    <span class="circuit-overlay overlay-r1" id="label-r1">R1</span>
-                    <span class="circuit-overlay overlay-r2" id="label-r2">R2</span>
-                    <span class="circuit-overlay overlay-re" id="label-re">RE</span>
-                    <span class="circuit-overlay overlay-beta" id="label-beta">&beta;</span>
-                </div>
-                <p class="circuit-caption">BJT Common-Emitter DC Bias (Voltage Divider)</p>
-                <script>
-                    function onBiasModeChange() {
-                        var mode = document.getElementById('bias_mode').value;
-                        var rowR2 = document.getElementById('row-r2');
-                        var rowRe = document.getElementById('row-re');
-                        var labelR1Text = document.getElementById('label-r1-text');
-                        var labelR1 = document.getElementById('label-r1');
-                        var labelR2 = document.getElementById('label-r2');
-                        var labelRe = document.getElementById('label-re');
-                        var caption = document.querySelector('.circuit-caption');
+                    <!-- Mode 1: Voltage Divider Bias (R1, R2, RC, RE) -->
+                    <div class="circuit-mode" data-mode="divider" style="display: {{ 'block' if form.bias_mode == 'divider' else 'none' }};">
+                        <svg class="circuit-svg" viewBox="0 0 340 360" role="img" aria-label="Voltage divider bias circuit">
+                            <!-- VCC rail -->
+                            <line class="wire" x1="110" y1="32" x2="230" y2="32"/>
+                            <circle cx="230" cy="32" r="3.5" fill="#1e293b"/>
+                            <text class="vcc-label" x="240" y="30" data-label="vcc">VCC = 12.0 V</text>
 
-                        if (mode === 'fixed') {
-                            rowR2.style.display = 'none';
-                            rowRe.style.display = 'none';
-                            labelR1Text.innerHTML = '<i>R</i><sub>B</sub> <span class="label-desc">(Base Resistor)</span>';
-                            if(labelR1) labelR1.style.display = 'block';
-                            if(labelR2) labelR2.style.display = 'none';
-                            if(labelRe) labelRe.style.display = 'none';
-                            if(caption) caption.innerText = 'BJT Fixed Bias DC Operating Point';
-                        } else if (mode === 'emitter') {
-                            rowR2.style.display = 'none';
-                            rowRe.style.display = 'flex';
-                            labelR1Text.innerHTML = '<i>R</i><sub>B</sub> <span class="label-desc">(Base Resistor)</span>';
-                            if(labelR1) labelR1.style.display = 'block';
-                            if(labelR2) labelR2.style.display = 'none';
-                            if(labelRe) labelRe.style.display = 'block';
-                            if(caption) caption.innerText = 'BJT Emitter Bias DC Operating Point';
-                        } else {
-                            rowR2.style.display = 'flex';
-                            rowRe.style.display = 'flex';
-                            labelR1Text.innerHTML = '<i>R</i><sub>1</sub> <span class="label-desc">(Upper Divider)</span>';
-                            if(labelR1) labelR1.style.display = 'block';
-                            if(labelR2) labelR2.style.display = 'block';
-                            if(labelRe) labelRe.style.display = 'block';
-                            if(caption) caption.innerText = 'BJT Common-Emitter DC Bias (Voltage Divider)';
-                        }
-                        updateDiagramLabels();
+                            <!-- R1 -->
+                            <line class="wire" x1="110" y1="32" x2="110" y2="62"/>
+                            <polyline class="wire" points="110,62 103,68 117,78 103,88 117,98 103,108 117,118 110,124"/>
+                            <line class="wire" x1="110" y1="124" x2="110" y2="170"/>
+                            <text class="lbl" x="94" y="98" text-anchor="end" data-label="r1">R1 = 33.0 kΩ</text>
+
+                            <!-- Base node wire -->
+                            <circle cx="110" cy="170" r="3.5" fill="#1e293b"/>
+                            <line class="wire" x1="110" y1="170" x2="172" y2="170"/>
+
+                            <!-- R2 -->
+                            <line class="wire" x1="110" y1="170" x2="110" y2="182"/>
+                            <polyline class="wire" points="110,182 103,188 117,198 103,208 117,218 103,228 117,238 110,244"/>
+                            <line class="wire" x1="110" y1="244" x2="110" y2="306"/>
+                            <text class="lbl" x="94" y="216" text-anchor="end" data-label="r2">R2 = 10.0 kΩ</text>
+
+                            <!-- RC -->
+                            <line class="wire" x1="230" y1="32" x2="230" y2="62"/>
+                            <polyline class="wire" points="230,62 223,68 237,78 223,88 237,98 223,108 237,118 230,124"/>
+                            <line class="wire" x1="230" y1="124" x2="230" y2="152"/>
+                            <text class="lbl" x="244" y="98" data-label="rc">RC = 2.2 kΩ</text>
+
+                            <!-- Transistor Q1 (NPN) -->
+                            <circle cx="192" cy="172" r="27" fill="none" stroke="#1e293b" stroke-width="2"/>
+                            <line x1="172" y1="154" x2="172" y2="190" stroke="#1e293b" stroke-width="4"/>
+                            <line class="wire" x1="172" y1="162" x2="230" y2="152"/>
+                            <line class="wire" x1="172" y1="182" x2="230" y2="192"/>
+                            <polygon points="222,190 208,185 208,191" fill="#1e293b"/>
+                            <text class="lbl" x="192" y="214" text-anchor="middle" data-label="beta">β = 100</text>
+
+                            <!-- RE -->
+                            <line class="wire" x1="230" y1="192" x2="230" y2="214"/>
+                            <polyline class="wire" points="230,214 223,220 237,230 223,240 237,250 223,260 237,270 230,276"/>
+                            <line class="wire" x1="230" y1="276" x2="230" y2="306"/>
+                            <text class="lbl" x="244" y="250" data-label="re">RE = 1.0 kΩ</text>
+
+                            <!-- Ground symbols -->
+                            <g class="wire">
+                                <line x1="110" y1="306" x2="110" y2="312"/>
+                                <line x1="100" y1="312" x2="120" y2="312"/>
+                                <line x1="103" y1="317" x2="117" y2="317"/>
+                                <line x1="107" y1="322" x2="113" y2="322"/>
+                            </g>
+                            <g class="wire">
+                                <line x1="230" y1="306" x2="230" y2="312"/>
+                                <line x1="220" y1="312" x2="240" y2="312"/>
+                                <line x1="223" y1="317" x2="237" y2="317"/>
+                                <line x1="227" y1="322" x2="233" y2="322"/>
+                            </g>
+                        </svg>
+                    </div>
+
+                    <!-- Mode 2: Fixed Bias (RB, RC, emitter grounded directly) -->
+                    <div class="circuit-mode" data-mode="fixed" style="display: {{ 'block' if form.bias_mode == 'fixed' else 'none' }};">
+                        <svg class="circuit-svg" viewBox="0 0 340 360" role="img" aria-label="Fixed bias circuit">
+                            <!-- VCC rail -->
+                            <line class="wire" x1="110" y1="32" x2="230" y2="32"/>
+                            <circle cx="230" cy="32" r="3.5" fill="#1e293b"/>
+                            <text class="vcc-label" x="240" y="30" data-label="vcc">VCC = 12.0 V</text>
+
+                            <!-- RB (VCC -> base) -->
+                            <line class="wire" x1="110" y1="32" x2="110" y2="62"/>
+                            <polyline class="wire" points="110,62 103,68 117,78 103,88 117,98 103,108 117,118 110,124"/>
+                            <line class="wire" x1="110" y1="124" x2="110" y2="170"/>
+                            <text class="lbl" x="94" y="98" text-anchor="end" data-label="rb">RB = 1 MΩ</text>
+
+                            <!-- Base node wire -->
+                            <circle cx="110" cy="170" r="3.5" fill="#1e293b"/>
+                            <line class="wire" x1="110" y1="170" x2="172" y2="170"/>
+
+                            <!-- RC (VCC -> collector) -->
+                            <line class="wire" x1="230" y1="32" x2="230" y2="62"/>
+                            <polyline class="wire" points="230,62 223,68 237,78 223,88 237,98 223,108 237,118 230,124"/>
+                            <line class="wire" x1="230" y1="124" x2="230" y2="152"/>
+                            <text class="lbl" x="244" y="98" data-label="rc">RC = 2.2 kΩ</text>
+
+                            <!-- Transistor Q1 (NPN) -->
+                            <circle cx="192" cy="172" r="27" fill="none" stroke="#1e293b" stroke-width="2"/>
+                            <line x1="172" y1="154" x2="172" y2="190" stroke="#1e293b" stroke-width="4"/>
+                            <line class="wire" x1="172" y1="162" x2="230" y2="152"/>
+                            <line class="wire" x1="172" y1="182" x2="230" y2="192"/>
+                            <polygon points="222,190 208,185 208,191" fill="#1e293b"/>
+                            <text class="lbl" x="192" y="214" text-anchor="middle" data-label="beta">β = 100</text>
+
+                            <!-- Emitter tied straight to ground (no RE) -->
+                            <line class="wire" x1="230" y1="192" x2="230" y2="306"/>
+                            <g class="wire">
+                                <line x1="230" y1="306" x2="230" y2="312"/>
+                                <line x1="220" y1="312" x2="240" y2="312"/>
+                                <line x1="223" y1="317" x2="237" y2="317"/>
+                                <line x1="227" y1="322" x2="233" y2="322"/>
+                            </g>
+                        </svg>
+                    </div>
+
+                    <!-- Mode 3: Emitter Bias (RB, RC, RE to ground; no R2) -->
+                    <div class="circuit-mode" data-mode="emitter" style="display: {{ 'block' if form.bias_mode == 'emitter' else 'none' }};">
+                        <svg class="circuit-svg" viewBox="0 0 340 360" role="img" aria-label="Emitter bias circuit">
+                            <!-- VCC rail -->
+                            <line class="wire" x1="110" y1="32" x2="230" y2="32"/>
+                            <circle cx="230" cy="32" r="3.5" fill="#1e293b"/>
+                            <text class="vcc-label" x="240" y="30" data-label="vcc">VCC = 12.0 V</text>
+
+                            <!-- RB (VCC -> base) -->
+                            <line class="wire" x1="110" y1="32" x2="110" y2="62"/>
+                            <polyline class="wire" points="110,62 103,68 117,78 103,88 117,98 103,108 117,118 110,124"/>
+                            <line class="wire" x1="110" y1="124" x2="110" y2="170"/>
+                            <text class="lbl" x="94" y="98" text-anchor="end" data-label="rb">RB = 1 MΩ</text>
+
+                            <!-- Base node wire -->
+                            <circle cx="110" cy="170" r="3.5" fill="#1e293b"/>
+                            <line class="wire" x1="110" y1="170" x2="172" y2="170"/>
+
+                            <!-- RC (VCC -> collector) -->
+                            <line class="wire" x1="230" y1="32" x2="230" y2="62"/>
+                            <polyline class="wire" points="230,62 223,68 237,78 223,88 237,98 223,108 237,118 230,124"/>
+                            <line class="wire" x1="230" y1="124" x2="230" y2="152"/>
+                            <text class="lbl" x="244" y="98" data-label="rc">RC = 2.2 kΩ</text>
+
+                            <!-- Transistor Q1 (NPN) -->
+                            <circle cx="192" cy="172" r="27" fill="none" stroke="#1e293b" stroke-width="2"/>
+                            <line x1="172" y1="154" x2="172" y2="190" stroke="#1e293b" stroke-width="4"/>
+                            <line class="wire" x1="172" y1="162" x2="230" y2="152"/>
+                            <line class="wire" x1="172" y1="182" x2="230" y2="192"/>
+                            <polygon points="222,190 208,185 208,191" fill="#1e293b"/>
+                            <text class="lbl" x="192" y="214" text-anchor="middle" data-label="beta">β = 100</text>
+
+                            <!-- RE (emitter -> ground) -->
+                            <line class="wire" x1="230" y1="192" x2="230" y2="214"/>
+                            <polyline class="wire" points="230,214 223,220 237,230 223,240 237,250 223,260 237,270 230,276"/>
+                            <line class="wire" x1="230" y1="276" x2="230" y2="306"/>
+                            <text class="lbl" x="244" y="250" data-label="re">RE = 1.0 kΩ</text>
+
+                            <!-- Ground symbol -->
+                            <g class="wire">
+                                <line x1="230" y1="306" x2="230" y2="312"/>
+                                <line x1="220" y1="312" x2="240" y2="312"/>
+                                <line x1="223" y1="317" x2="237" y2="317"/>
+                                <line x1="227" y1="322" x2="233" y2="322"/>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+                <p class="circuit-caption" id="circuit-caption">BJT Common-Emitter DC Bias (Voltage Divider)</p>
+                <script>
+                    // Show the resistance value in the friendliest unit (kΩ or MΩ)
+                    function formatResistance(value) {
+                        var v = parseFloat(value);
+                        if (isNaN(v)) { return value; }
+                        if (Math.abs(v) >= 1000) { return (v / 1000) + ' MΩ'; }
+                        return value + ' kΩ';
                     }
 
+                    // Show the SVG that matches the selected bias mode and refresh its labels
                     function updateDiagramLabels() {
-                        var mode = document.getElementById('bias_mode').value;
+                        var modeSelect = document.getElementById('bias_mode');
+                        var mode = modeSelect ? modeSelect.value : 'divider';
+
+                        var panels = document.querySelectorAll('.circuit-mode');
+                        for (var i = 0; i < panels.length; i++) {
+                            panels[i].style.display = (panels[i].getAttribute('data-mode') === mode) ? 'block' : 'none';
+                        }
+
+                        var panel = document.querySelector('.circuit-mode[data-mode="' + mode + '"]');
+                        if (!panel) { return; }
+
+                        function setLabel(key, text) {
+                            var el = panel.querySelector('[data-label="' + key + '"]');
+                            if (el) { el.textContent = text; }
+                        }
+
                         var vccVal = document.getElementById('vcc').value;
                         var r1Val = document.getElementById('r1').value;
                         var r2Val = document.getElementById('r2').value;
@@ -186,25 +315,57 @@
                         var reVal = document.getElementById('re').value;
                         var betaVal = document.getElementById('beta').value;
 
-                        document.getElementById('label-vcc').innerText = 'VCC = ' + vccVal + ' V';
-                        document.getElementById('label-rc').innerText = 'RC = ' + rcVal + ' kΩ';
-                        
+                        setLabel('vcc', 'VCC = ' + vccVal + ' V');
+                        setLabel('rc', 'RC = ' + formatResistance(rcVal));
+                        setLabel('beta', 'β = ' + betaVal);
+
                         if (mode === 'fixed') {
-                            document.getElementById('label-r1').innerText = 'RB = ' + r1Val + ' kΩ';
+                            setLabel('rb', 'RB = ' + formatResistance(r1Val));
                         } else if (mode === 'emitter') {
-                            document.getElementById('label-r1').innerText = 'RB = ' + r1Val + ' kΩ';
-                            document.getElementById('label-re').innerText = 'RE = ' + reVal + ' kΩ';
+                            setLabel('rb', 'RB = ' + formatResistance(r1Val));
+                            setLabel('re', 'RE = ' + formatResistance(reVal));
                         } else {
-                            document.getElementById('label-r1').innerText = 'R1 = ' + r1Val + ' kΩ';
-                            document.getElementById('label-r2').innerText = 'R2 = ' + r2Val + ' kΩ';
-                            document.getElementById('label-re').innerText = 'RE = ' + reVal + ' kΩ';
+                            setLabel('r1', 'R1 = ' + formatResistance(r1Val));
+                            setLabel('r2', 'R2 = ' + formatResistance(r2Val));
+                            setLabel('re', 'RE = ' + formatResistance(reVal));
                         }
-                        document.getElementById('label-beta').innerText = 'β = ' + betaVal;
                     }
 
-                    window.onload = function() {
+                    // Show/hide the input rows that belong to the selected bias mode
+                    function onBiasModeChange() {
+                        var mode = document.getElementById('bias_mode').value;
+                        var rowR2 = document.getElementById('row-r2');
+                        var rowRe = document.getElementById('row-re');
+                        var labelR1Text = document.getElementById('label-r1-text');
+                        var caption = document.getElementById('circuit-caption');
+
+                        if (mode === 'fixed') {
+                            rowR2.style.display = 'none';
+                            rowRe.style.display = 'none';
+                            labelR1Text.innerHTML = '<i>R</i><sub>B</sub> <span class="label-desc">(Base Resistor)</span>';
+                            if (caption) { caption.innerText = 'BJT Fixed Bias DC Operating Point'; }
+                        } else if (mode === 'emitter') {
+                            rowR2.style.display = 'none';
+                            rowRe.style.display = 'flex';
+                            labelR1Text.innerHTML = '<i>R</i><sub>B</sub> <span class="label-desc">(Base Resistor)</span>';
+                            if (caption) { caption.innerText = 'BJT Emitter Bias DC Operating Point'; }
+                        } else {
+                            rowR2.style.display = 'flex';
+                            rowRe.style.display = 'flex';
+                            labelR1Text.innerHTML = '<i>R</i><sub>1</sub> <span class="label-desc">(Upper Divider)</span>';
+                            if (caption) { caption.innerText = 'BJT Common-Emitter DC Bias (Voltage Divider)'; }
+                        }
+
+                        updateDiagramLabels();
+                    }
+
+                    // Always restore the diagram that matches the current mode after load/submit
+                    document.addEventListener('DOMContentLoaded', function () {
                         onBiasModeChange();
-                    };
+                    });
+                    window.addEventListener('load', function () {
+                        onBiasModeChange();
+                    });
                 </script>
             </div>
 
